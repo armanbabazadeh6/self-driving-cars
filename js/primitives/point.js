@@ -4,6 +4,10 @@ class Point {
         this.y = y;
     }
 
+    equals(point) { //equals method
+        return this.x == point.x && this.y == point.y
+    }
+
     draw(ctx, size = 18, color = "black") {
         const rad = size / 2; //draw points as circles
         ctx.beginPath();
