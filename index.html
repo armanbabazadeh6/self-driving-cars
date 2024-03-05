@@ -10,7 +10,9 @@
         <div id="controls">
         </div>
 
+        <script src="js/graphEditor.js"></script>
         <script src="js/math/graph.js"></script>
+        <script src="js/math/utils.js"></script>
         <script src="js/primitives/point.js"></script>
         <script src="js/primitives/segment.js"></script>
         <script>
@@ -34,7 +36,17 @@
 
 
             const graph = new Graph([p1, p2, p3, p4], [s1, s2, s3, s4]);
-            graph.draw(ctx);
+            const graphEditor = new GraphEditor(myCanvas, graph);
+
+            animate();
+
+            function animate() {
+                ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+                graphEditor.display();
+                requestAnimationFrame(animate);
+                //Reursive call where the browser will try to recall this function 60 times per seccond 
+            }
+
         </script>
     </body>
 </html>
