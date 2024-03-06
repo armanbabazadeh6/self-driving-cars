@@ -14,25 +14,7 @@ class GraphEditor {
     }
 
     #addEventListeners() {
-        this.canvas.addEventListener("mousedown", (evt) => {
-            if (evt.button == 2) { //Right click
-                if (this.hovered) {
-                    this.#removePoint(this.hovered);
-                } else {
-                    this.selected = null;
-                }
-            }
-            if (evt.button == 0) {         //Where the mouse location is from the click
-                if (this.hovered) {
-                    this.#select(this.hovered);
-                    this.dragging = true;
-                    return;
-                }
-                this.graph.addPoint(this.mouse);
-                this.#select(this.mouse);
-                this.hovered = this.mouse;
-            }    
-        });
+        this.canvas.addEventListener("mousedown", this.#handleMouseDown.bind(this));
         this.canvas.addEventListener("mousemove", (evt) => {
             this.mouse = new Point(evt.offsetX, evt.offsetY);             
             this.hovered = getNearestPoint(this.mouse, this.graph.points, 10);
@@ -44,6 +26,26 @@ class GraphEditor {
 
         this.canvas.addEventListener("contextmenu", (evt) => evt.preventDefault());
         this.canvas.addEventListener("mouseup", () => this.dragging = false);
+    }
+
+    #handleMouseDown(evt) {
+        if(evt.button == 2) {
+            if (this.selected) {
+                this.selected = null;
+            } else if (this.hovered) {
+                this.#removePoint(this.hovered);
+            }
+        }
+        if(evt.button == 0) {
+            if (this.hovered) {
+                this.#select(this.hovered);
+                this.dragging = true;
+                return;
+            }
+            this.graph.addPoint(this.mouse);
+            this.#select(this.mouse);
+            this.hovered = this.mouse;
+        }
     }
 
     #select(point) {
@@ -71,7 +73,7 @@ class GraphEditor {
         }
         if (this.selected) {
             const intent = this.hovered ? this.hovered : this.mouse;
-            new Segment(this.selected, intent).draw(ctx);
+            new Segment(this.selected, intent).draw(ctx, {dash: [3, 3]}); //Dash 3 pixels of line and 3 pixels of space
             this.selected.draw(this.ctx, {outline: true });
         }
     }
