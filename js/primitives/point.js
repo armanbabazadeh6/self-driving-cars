@@ -8,7 +8,7 @@ class Point {
         return this.x == point.x && this.y == point.y
     }
 
-    draw(ctx, { size = 18, color = "black", outline = false } = {}) { // Group properties as object so we can pass it in any order we want
+    draw(ctx, { size = 18, color = "black", outline = false, fill } = {}) { // Group properties as object so we can pass it in any order we want
         const rad = size / 2; //draw points as circles
         ctx.beginPath();
         ctx.fillStyle = color;
@@ -20,6 +20,12 @@ class Point {
             ctx.strokeStyle = "red";
             ctx.arc(this.x, this.y, rad * 0.6, 0, Math.PI * 2);
             ctx.stroke();
+        }
+        if (fill) {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, rad * 0.4, 0, Math.PI * 2);
+            ctx.fillStyle = "red";
+            ctx.fill();
         }
     }
 }
