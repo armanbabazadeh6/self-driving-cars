@@ -15,17 +15,19 @@ class GraphEditor {
 
     #addEventListeners() {
         this.canvas.addEventListener("mousedown", this.#handleMouseDown.bind(this));
-        this.canvas.addEventListener("mousemove", (evt) => {
-            this.mouse = new Point(evt.offsetX, evt.offsetY);             
+        this.canvas.addEventListener("mousemove", this.#handleMouseMove.bind(this));
+        this.canvas.addEventListener("contextmenu", (evt) => evt.preventDefault());
+        this.canvas.addEventListener("mouseup", () => this.dragging = false);
+    }
+
+
+    #handleMouseMove(evt) {
+        this.mouse = new Point(evt.offsetX, evt.offsetY);             
             this.hovered = getNearestPoint(this.mouse, this.graph.points, 10);
             if (this.dragging == true) {
                 this.selected.x = this.mouse.x;
                 this.selected.y = this.mouse.y;
             }
-        });
-
-        this.canvas.addEventListener("contextmenu", (evt) => evt.preventDefault());
-        this.canvas.addEventListener("mouseup", () => this.dragging = false);
     }
 
     #handleMouseDown(evt) {
